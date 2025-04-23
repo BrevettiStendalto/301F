@@ -18,6 +18,8 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
 }
 
 body.loaded {
@@ -196,7 +198,7 @@ body.loaded {
 }
 
 .hero-image img {
-    max-width: 100%;
+    max-width: 120%;
     height: auto;
     border-radius: 10px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
@@ -869,25 +871,44 @@ footer {
     .hero {
         flex-direction: column;
         text-align: center;
-        padding-top: 5rem;
+        padding: 2rem 5% 3rem;
+        min-height: auto;
     }
 
     .hero-content {
         padding-right: 0;
         margin-bottom: 2rem;
+        max-width: 100%;
     }
 
     .hero h1 {
-        font-size: 3rem;
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
     }
 
     .hero h2 {
         font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .hero-image {
+        margin: 0;
+        max-width: 90%;
+    }
+
+    .hero-product-image {
+        max-width: 80%;
     }
 
     .product-showcase,
     .specifications {
         flex-direction: column;
+        padding: 3rem 5%;
     }
 
     .showcase-content,
@@ -898,10 +919,198 @@ footer {
 
     .section-title {
         font-size: 2rem;
+        margin-bottom: 1.5rem;
     }
 
-    .carousel-slide img {
+    .features, 
+    .applications {
+        padding: 3rem 5%;
+    }
+
+    .features-grid,
+    .applications-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .feature-card,
+    .application-card {
+        padding: 1.5rem;
+    }
+
+    .feature-icon,
+    .application-icon {
+        font-size: 2rem;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 1rem;
+    }
+
+    .feature-card h3,
+    .application-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .specs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .spec-item {
+        padding: 1.2rem;
+    }
+
+    .spec-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem;
+    }
+
+    .cta-section {
+        padding: 3rem 5%;
+    }
+
+    .cta-section h2 {
+        font-size: 2rem;
+    }
+
+    .contact-form {
+        max-width: 100%;
+    }
+
+    .form-option label {
+        font-size: 1rem;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+    .social-links {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .footer-section {
+        text-align: center;
+    }
+
+    .certification-details {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .certification-image {
+        order: -1;
+    }
+
+    .language-switcher {
+        top: 10px;
+        left: 10px;
+    }
+
+    .language-button {
+        padding: 6px 12px;
+    }
+
+    .carousel-section {
+        padding: 2rem 1rem;
+    }
+
+    .logo-container {
+        padding: 0.5rem 0;
+    }
+
+    .header-logo {
+        max-width: 180px;
+    }
+
+    .comparison-img-container {
         height: 300px;
+    }
+}
+
+/* Extra Small Devices - Smartphones */
+@media (max-width: 480px) {
+    .hero {
+        padding: 1.5rem 1rem 2.5rem;
+    }
+
+    .hero h1 {
+        font-size: 2.3rem;
+    }
+
+    .hero h2 {
+        font-size: 1.3rem;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.2rem;
+    }
+
+    .features, 
+    .applications,
+    .specifications,
+    .cta-section {
+        padding: 2.5rem 1rem;
+    }
+
+    .prefix-dropdown {
+        width: 250px;
+    }
+    
+    .selected-prefix {
+        width: 80px;
+    }
+
+    .phone-input-container {
+        flex-direction: column;
+    }
+
+    .selected-prefix {
+        width: 100%;
+        border-radius: 5px 5px 0 0;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+        border-bottom: none;
+    }
+
+    .phone-input {
+        width: 100%;
+        border-radius: 0 0 5px 5px;
+        border-top: none;
+    }
+
+    .comparison-item {
+        flex-basis: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .comparison-img-container {
+        height: 250px;
+    }
+
+    .comparison-description {
+        padding: 1rem;
+    }
+
+    .comparison-description h3 {
+        font-size: 1.1rem;
+    }
+
+    .comparison-description p {
+        font-size: 0.9rem;
+    }
+
+    .appointment-options {
+        padding: 1rem;
+    }
+
+    .appointment-option {
+        padding: 0.6rem;
     }
 }
 
@@ -1061,5 +1270,291 @@ footer {
 @media (max-width: 600px) {
     .appointment-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Phone Input Styles */
+.phone-input-container {
+    display: flex;
+    position: relative;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.phone-prefix-selector {
+    position: relative;
+    z-index: 10;
+}
+
+.selected-prefix {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 15px;
+    height: 50px;
+    background-color: var(--white);
+    border-radius: 5px 0 0 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: none;
+    cursor: pointer;
+    width: 100px;
+    transition: all 0.3s ease;
+}
+
+.selected-prefix:hover {
+    background-color: var(--light-gray);
+}
+
+.prefix-flag {
+    width: 20px;
+    height: 15px;
+    border-radius: 2px;
+    object-fit: cover;
+}
+
+.selected-prefix span {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.prefix-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 300px;
+    max-height: 0;
+    overflow: hidden;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    z-index: 1000;
+}
+
+.phone-prefix-selector.active .prefix-dropdown {
+    max-height: 350px;
+    opacity: 1;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.prefix-search {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.prefix-search input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+.prefix-list {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.prefix-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.prefix-item:hover {
+    background-color: var(--light-gray);
+}
+
+.prefix-country {
+    flex: 1;
+    font-size: 0.9rem;
+}
+
+.prefix-code {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--dark-gray);
+}
+
+.phone-input {
+    flex: 1;
+    height: 50px;
+    padding: 10px 15px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0 5px 5px 0;
+    font-size: 1rem;
+}
+
+.phone-input:focus, 
+.prefix-search input:focus {
+    outline: none;
+    border-color: var(--primary-yellow);
+    box-shadow: 0 0 0 2px rgba(255, 227, 91, 0.3);
+}
+
+@media (max-width: 480px) {
+    .prefix-dropdown {
+        width: 250px;
+    }
+    
+    .selected-prefix {
+        width: 80px;
+    }
+}
+
+/* Comparison Section (replacing carousel) */
+.comparison-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.comparison-item {
+    flex-basis: 48%;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.comparison-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.comparison-img-container {
+    height: 400px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.comparison-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.comparison-item:first-child .comparison-img-container img {
+    transform: scale(1.25);
+}
+
+.comparison-item:last-child .comparison-img-container img {
+    transform: scale(1.0);
+}
+
+.comparison-description {
+    padding: 1.5rem;
+    background-color: white;
+    z-index: 2;
+    position: relative;
+}
+
+.comparison-description h3 {
+    margin-top: 0;
+    color: #2d3748;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.comparison-description p {
+    color: #4a5568;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .comparison-item {
+        flex-basis: 100%;
+    }
+}
+
+/* Mobile Optimization */
+input, 
+select, 
+textarea, 
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+body {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Add smooth scroll with better mobile performance */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Focus styles that work better on mobile */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid var(--primary-yellow);
+    outline-offset: 2px;
+}
+
+/* Improve touch targets for mobile */
+@media (max-width: 768px) {
+    button,
+    a,
+    input[type="checkbox"],
+    input[type="radio"],
+    .prefix-item,
+    .application-card,
+    .feature-card {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .application-icon,
+    .feature-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem auto;
+    }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 } 
