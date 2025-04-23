@@ -1091,6 +1091,7 @@ footer {
 
     .section-title {
         font-size: 1.8rem;
+        padding: 1em;
     }
     
     .cta-button {
@@ -1243,22 +1244,39 @@ footer {
 
 .certification-image {
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
 }
 
-.certification-image img {
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+.certification-image img, 
+.certification-image video {
+    max-width: 80%;
+    height: 20%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    object-fit: contain;
 }
 
 @media (max-width: 768px) {
     .certification-details {
         flex-direction: column;
-        gap: 2rem;
+    }
+    
+    .certification-text {
+        padding: 0 1.5rem;
+        margin-bottom: 1rem;
     }
     
     .certification-image {
-        order: -1;
+        margin-top: 2rem;
+        width: 100%;
+    }
+    
+    .certification-image video {
+        width: 100%;
+        height: auto;
     }
 }
 
