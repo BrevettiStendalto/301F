@@ -165,10 +165,12 @@
 
     <section id="contact" class="cta-section">
         <h2 class="section-title">Contattaci</h2>
-        <form name="contatto" method="POST" data-netlify="true" class="contact-form">
+        <form name="contatto" method="POST" netlify data-netlify-honeypot="bot-field" class="contact-form">
+            <p style="display:none;">
+                <label>Lascia vuoto questo campo: <input name="bot-field"></label>
+            </p>
             <input type="hidden" name="form-name" value="contatto">
             <input type="hidden" name="subject" value="Nuovo messaggio dal sito Brevetti Stendalto">
-            <input type="hidden" name="email-to" value="brevettistendalto@gmail.com">
             <input type="text" placeholder="Nome" name="nome" required>
             <input type="email" placeholder="Email" name="email" required>
             <div class="phone-input-container">
