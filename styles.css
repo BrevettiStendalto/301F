@@ -1554,11 +1554,11 @@ footer {
 }
 
 .comparison-item:first-child .comparison-img-container img {
-    transform: scale(1.25);
+    transform: scale(1.1);
 }
 
 .comparison-item:last-child .comparison-img-container img {
-    transform: scale(1.0);
+    transform: scale(1.1);
 }
 
 .comparison-description {
