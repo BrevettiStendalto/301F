@@ -164,8 +164,11 @@
     <section id="contact" class="cta-section">
         <h2 class="section-title">Get in Touch</h2>
         <form name="contact" method="POST" data-netlify="true" class="contact-form">
-            <input type="text" placeholder="Name" required>
-            <input type="email" placeholder="Email" required>
+            <input type="hidden" name="form-name" value="contact">
+            <input type="hidden" name="subject" value="New message from Brevetti Stendalto website">
+            <input type="hidden" name="email-to" value="brevettistendalto@gmail.com">
+            <input type="text" placeholder="Name" name="name" required>
+            <input type="email" placeholder="Email" name="email" required>
             <div class="phone-input-container">
                 <div class="phone-prefix-selector">
                     <div class="selected-prefix">
@@ -604,7 +607,7 @@
                 <input type="tel" placeholder="Phone number" class="phone-input" name="phone" pattern="[0-9\s\-\+\(\)]*">
                 <input type="hidden" name="phone_prefix" value="+44">
             </div>
-            <textarea placeholder="Message" required></textarea>
+            <textarea placeholder="Message" name="message" required></textarea>
             <div class="form-option">
                 <div class="checkbox-container">
                     <input type="checkbox" id="parma-appointment" name="parma-appointment">

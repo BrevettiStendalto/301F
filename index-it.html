@@ -165,9 +165,12 @@
 
     <section id="contact" class="cta-section">
         <h2 class="section-title">Contattaci</h2>
-        <form class="contact-form">
-            <input type="text" placeholder="Nome" required>
-            <input type="email" placeholder="Email" required>
+        <form name="contatto" method="POST" data-netlify="true" class="contact-form">
+            <input type="hidden" name="form-name" value="contatto">
+            <input type="hidden" name="subject" value="Nuovo messaggio dal sito Brevetti Stendalto">
+            <input type="hidden" name="email-to" value="brevettistendalto@gmail.com">
+            <input type="text" placeholder="Nome" name="nome" required>
+            <input type="email" placeholder="Email" name="email" required>
             <div class="phone-input-container">
                 <div class="phone-prefix-selector">
                     <div class="selected-prefix">
@@ -891,7 +894,7 @@
                 <input type="tel" placeholder="Numero di telefono" class="phone-input" name="phone" pattern="[0-9\s\-\+\(\)]*">
                 <input type="hidden" name="phone_prefix" value="+39">
             </div>
-            <textarea placeholder="Messaggio" required></textarea>
+            <textarea placeholder="Messaggio" name="messaggio" required></textarea>
             <div class="form-option">
                 <div class="checkbox-container">
                     <input type="checkbox" id="parma-appointment" name="parma-appointment">
