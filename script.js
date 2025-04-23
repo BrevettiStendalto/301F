@@ -23,66 +23,98 @@ function initAppointmentOptions() {
     console.log("Initializing appointment options");
     const parmaCheckbox = document.getElementById('parma-appointment');
     const parmaOptions = document.getElementById('parma-options');
-    const formOption = document.querySelector('.form-option');
     
-    if (parmaCheckbox && parmaOptions && formOption) {
-        console.log("Found appointment elements");
+    // Inizializza tutti i checkbox-container (inclusi quelli del form come Privacy Policy)
+    const allCheckboxContainers = document.querySelectorAll('.checkbox-container');
+    
+    console.log("Found " + allCheckboxContainers.length + " checkbox containers");
+    
+    allCheckboxContainers.forEach(container => {
+        const checkbox = container.querySelector('input[type="checkbox"]');
+        const formOption = container.closest('.form-option');
         
-        // Add initial check on page load
-        if (parmaCheckbox.checked) {
-            parmaOptions.style.display = 'block';
-            formOption.classList.add('active');
-        } else {
-            parmaOptions.style.display = 'none';
-            formOption.classList.remove('active');
-        }
-        
-        // Mobile-friendly click event (works better than change on mobile)
-        formOption.addEventListener('click', function(e) {
-            // Exclude clicks on label (which already triggers the checkbox)
-            if (e.target === this || e.target.classList.contains('checkbox-custom')) {
-                parmaCheckbox.checked = !parmaCheckbox.checked;
-                handleCheckboxChange();
-            }
-        });
-        
-        // Also handle direct checkbox changes
-        parmaCheckbox.addEventListener('change', handleCheckboxChange);
-        
-        function handleCheckboxChange() {
-            console.log("Checkbox state changed to: ", parmaCheckbox.checked);
-            if (parmaCheckbox.checked) {
-                parmaOptions.style.display = 'block';
+        if (checkbox && formOption) {
+            // Initial state
+            if (checkbox.checked) {
                 formOption.classList.add('active');
             } else {
-                parmaOptions.style.display = 'none';
                 formOption.classList.remove('active');
-                // Deseleziona tutti i radio button quando si deseleziona il checkbox
-                const radioButtons = parmaOptions.querySelectorAll('input[type="radio"]');
-                radioButtons.forEach(radio => {
-                    radio.checked = false;
-                });
             }
-        }
-        
-        // Handle radio button selection
-        const appointmentOptions = document.querySelectorAll('.appointment-option');
-        appointmentOptions.forEach(option => {
-            option.addEventListener('click', function(e) {
-                // Find the radio button inside this option
-                const radio = this.querySelector('input[type="radio"]');
-                if (radio) {
-                    radio.checked = true;
+            
+            // Mobile-friendly click event
+            container.addEventListener('click', function(e) {
+                // Prevent double-triggering when clicking directly on the checkbox
+                if (e.target !== checkbox) {
+                    checkbox.checked = !checkbox.checked;
                     
-                    // Remove selected class from all options and add to the clicked one
-                    appointmentOptions.forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
+                    if (checkbox.checked) {
+                        formOption.classList.add('active');
+                    } else {
+                        formOption.classList.remove('active');
+                    }
+                    
+                    // Gestione specifica per il checkbox di appuntamento Parma
+                    if (checkbox.id === 'parma-appointment' && parmaOptions) {
+                        if (checkbox.checked) {
+                            parmaOptions.style.display = 'block';
+                        } else {
+                            parmaOptions.style.display = 'none';
+                            
+                            // Deseleziona tutti i radio button
+                            const radioButtons = parmaOptions.querySelectorAll('input[type="radio"]');
+                            radioButtons.forEach(radio => {
+                                radio.checked = false;
+                            });
+                        }
+                    }
+                    
+                    // Emit change event
+                    const event = new Event('change');
+                    checkbox.dispatchEvent(event);
                 }
             });
+            
+            // Listen for direct changes on the checkbox
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    formOption.classList.add('active');
+                } else {
+                    formOption.classList.remove('active');
+                }
+                
+                // Gestione specifica per il checkbox di appuntamento Parma
+                if (this.id === 'parma-appointment' && parmaOptions) {
+                    if (this.checked) {
+                        parmaOptions.style.display = 'block';
+                    } else {
+                        parmaOptions.style.display = 'none';
+                        
+                        // Deseleziona tutti i radio button
+                        const radioButtons = parmaOptions.querySelectorAll('input[type="radio"]');
+                        radioButtons.forEach(radio => {
+                            radio.checked = false;
+                        });
+                    }
+                }
+            });
+        }
+    });
+    
+    // Handle radio button selection
+    const appointmentOptions = document.querySelectorAll('.appointment-option');
+    appointmentOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            // Find the radio button inside this option
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) {
+                radio.checked = true;
+                
+                // Remove selected class from all options and add to the clicked one
+                appointmentOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+            }
         });
-    } else {
-        console.log("Appointment elements not found", {parmaCheckbox, parmaOptions, formOption});
-    }
+    });
 }
 
 // Function to handle scroll animations
