@@ -165,14 +165,10 @@
 
     <section id="contact" class="cta-section">
         <h2 class="section-title">Contattaci</h2>
-        <form name="contatto" method="POST" netlify data-netlify-honeypot="bot-field" class="contact-form">
-            <p style="display:none;">
-                <label>Lascia vuoto questo campo: <input name="bot-field"></label>
-            </p>
-            <input type="hidden" name="form-name" value="contatto">
-            <input type="hidden" name="subject" value="Nuovo messaggio dal sito Brevetti Stendalto">
-            <input type="text" placeholder="Nome" name="nome" required>
-            <input type="email" placeholder="Email" name="email" required>
+        <form action="https://api.web3forms.com/submit" method="POST" class="contact-form">
+            <input type="hidden" name="access_key" value="ed0a385b-c174-4c4e-9213-e7aee30cfa88">
+            <input type="text" placeholder="Nome e Cognome" required>
+            <input type="email" placeholder="Email" required>
             <div class="phone-input-container">
                 <div class="phone-prefix-selector">
                     <div class="selected-prefix">
@@ -896,7 +892,7 @@
                 <input type="tel" placeholder="Numero di telefono" class="phone-input" name="phone" pattern="[0-9\s\-\+\(\)]*">
                 <input type="hidden" name="phone_prefix" value="+39">
             </div>
-            <textarea placeholder="Messaggio" name="messaggio" required></textarea>
+            <textarea placeholder="Messaggio" required></textarea>
             <div class="form-option">
                 <div class="checkbox-container">
                     <input type="checkbox" id="parma-appointment" name="parma-appointment">
