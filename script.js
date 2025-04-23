@@ -1,5 +1,7 @@
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded");
+    
     // Initialize scroll animations
     initScrollAnimations();
     
@@ -10,27 +12,78 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
     
     // Function to handle the appointment checkbox
+    initAppointmentOptions();
+    
+    // Inizializza il selettore di prefisso telefonico
+    initPhonePrefixSelector();
+});
+
+// Function to handle appointment checkbox
+function initAppointmentOptions() {
+    console.log("Initializing appointment options");
     const parmaCheckbox = document.getElementById('parma-appointment');
     const parmaOptions = document.getElementById('parma-options');
+    const formOption = document.querySelector('.form-option');
     
-    if (parmaCheckbox && parmaOptions) {
-        parmaCheckbox.addEventListener('change', function() {
-            if (this.checked) {
+    if (parmaCheckbox && parmaOptions && formOption) {
+        console.log("Found appointment elements");
+        
+        // Add initial check on page load
+        if (parmaCheckbox.checked) {
+            parmaOptions.style.display = 'block';
+            formOption.classList.add('active');
+        } else {
+            parmaOptions.style.display = 'none';
+            formOption.classList.remove('active');
+        }
+        
+        // Mobile-friendly click event (works better than change on mobile)
+        formOption.addEventListener('click', function(e) {
+            // Exclude clicks on label (which already triggers the checkbox)
+            if (e.target === this || e.target.classList.contains('checkbox-custom')) {
+                parmaCheckbox.checked = !parmaCheckbox.checked;
+                handleCheckboxChange();
+            }
+        });
+        
+        // Also handle direct checkbox changes
+        parmaCheckbox.addEventListener('change', handleCheckboxChange);
+        
+        function handleCheckboxChange() {
+            console.log("Checkbox state changed to: ", parmaCheckbox.checked);
+            if (parmaCheckbox.checked) {
                 parmaOptions.style.display = 'block';
+                formOption.classList.add('active');
             } else {
                 parmaOptions.style.display = 'none';
+                formOption.classList.remove('active');
                 // Deseleziona tutti i radio button quando si deseleziona il checkbox
                 const radioButtons = parmaOptions.querySelectorAll('input[type="radio"]');
                 radioButtons.forEach(radio => {
                     radio.checked = false;
                 });
             }
+        }
+        
+        // Handle radio button selection
+        const appointmentOptions = document.querySelectorAll('.appointment-option');
+        appointmentOptions.forEach(option => {
+            option.addEventListener('click', function(e) {
+                // Find the radio button inside this option
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) {
+                    radio.checked = true;
+                    
+                    // Remove selected class from all options and add to the clicked one
+                    appointmentOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                }
+            });
         });
+    } else {
+        console.log("Appointment elements not found", {parmaCheckbox, parmaOptions, formOption});
     }
-    
-    // Inizializza il selettore di prefisso telefonico
-    initPhonePrefixSelector();
-});
+}
 
 // Function to handle scroll animations
 function initScrollAnimations() {
@@ -60,6 +113,9 @@ function initCarousel() {
     const prevButton = document.querySelector('.carousel-button.prev');
     const nextButton = document.querySelector('.carousel-button.next');
     
+    // If carousel components are not found, exit early
+    if (!carousel || !slides.length) return;
+    
     let currentSlide = 0;
     const totalSlides = slides.length;
     
@@ -77,19 +133,22 @@ function initCarousel() {
         carousel.style.transform = `translateX(${offset}%)`;
     }
     
-    // Event listeners for buttons
-    prevButton.addEventListener('click', () => {
-        goToSlide(currentSlide - 1);
-    });
-    
-    nextButton.addEventListener('click', () => {
-        goToSlide(currentSlide + 1);
-    });
-    
-    // Auto-advance slides every 5 seconds
-    setInterval(() => {
-        goToSlide(currentSlide + 1);
-    }, 5000);
+    // Add event listeners only if buttons exist
+    if (prevButton && nextButton) {
+        // Event listeners for buttons
+        prevButton.addEventListener('click', () => {
+            goToSlide(currentSlide - 1);
+        });
+        
+        nextButton.addEventListener('click', () => {
+            goToSlide(currentSlide + 1);
+        });
+        
+        // Auto-advance slides every 5 seconds
+        setInterval(() => {
+            goToSlide(currentSlide + 1);
+        }, 5000);
+    }
 }
 
 // Function to handle form submission
@@ -106,10 +165,23 @@ function initContactForm() {
             // Here you would typically send the form data to a server
             // For now, we'll just log it and show a success message
             console.log('Form submitted:', formValues);
-            alert('Grazie per il tuo messaggio! Ti risponderemo presto.');
+            
+            // Show appropriate message based on language
+            const lang = document.documentElement.lang;
+            if (lang === 'it') {
+                alert('Grazie per il tuo messaggio! Ti risponderemo presto.');
+            } else {
+                alert('Thank you for your message! We will get back to you soon.');
+            }
             
             // Reset the form
             contactForm.reset();
+            
+            // Reset appointment options
+            const parmaOptions = document.getElementById('parma-options');
+            if (parmaOptions) {
+                parmaOptions.style.display = 'none';
+            }
         });
     }
 }
@@ -137,17 +209,6 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Add hover effect to feature cards
-document.querySelectorAll('.feature-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-10px)';
-    });
-    
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0)';
-    });
-});
-
 // Loading animation
 window.addEventListener('load', () => {
     const loader = document.querySelector('.loader');
@@ -158,16 +219,21 @@ window.addEventListener('load', () => {
     
     // Hide loader after a short delay
     setTimeout(() => {
-        loader.classList.add('hidden');
-        // Remove loader from DOM after animation
-        setTimeout(() => {
-            loader.remove();
-        }, 500);
+        if (loader) {
+            loader.classList.add('hidden');
+            // Remove loader from DOM after animation
+            setTimeout(() => {
+                if (loader.parentNode) {
+                    loader.remove();
+                }
+            }, 500);
+        }
     }, 1000);
 });
 
 // Funzione per gestire il selettore di prefisso telefonico
 function initPhonePrefixSelector() {
+    console.log("Initializing phone prefix selector");
     const prefixSelectors = document.querySelectorAll('.phone-prefix-selector');
     
     prefixSelectors.forEach(selector => {
@@ -179,11 +245,16 @@ function initPhonePrefixSelector() {
         const hiddenInput = selector.parentElement.querySelector('input[name="phone_prefix"]');
         const searchInput = selector.querySelector('.prefix-search input');
         
+        console.log("Setting up phone prefix selector", {selector, selectedPrefix, dropdown});
+        
         // Toggle dropdown when clicking on the selected prefix
-        selectedPrefix.addEventListener('click', () => {
+        selectedPrefix.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("Selected prefix clicked");
             selector.classList.toggle('active');
             if (selector.classList.contains('active')) {
-                searchInput.focus();
+                if (searchInput) searchInput.focus();
             }
         });
         
@@ -196,14 +267,18 @@ function initPhonePrefixSelector() {
         
         // Handle prefix selection
         prefixItems.forEach(item => {
-            item.addEventListener('click', () => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log("Prefix item clicked");
+                
                 const prefix = item.getAttribute('data-prefix');
                 const country = item.getAttribute('data-country');
                 const flagSrc = item.querySelector('img').src;
                 
                 selectedImg.src = flagSrc;
                 selectedSpan.textContent = prefix;
-                hiddenInput.value = prefix;
+                if (hiddenInput) hiddenInput.value = prefix;
                 
                 selector.classList.remove('active');
             });
