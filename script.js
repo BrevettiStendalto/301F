@@ -1,7 +1,5 @@
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded");
-    
     // Initialize scroll animations
     initScrollAnimations();
     
@@ -12,110 +10,27 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
     
     // Function to handle the appointment checkbox
-    initAppointmentOptions();
+    const parmaCheckbox = document.getElementById('parma-appointment');
+    const parmaOptions = document.getElementById('parma-options');
+    
+    if (parmaCheckbox && parmaOptions) {
+        parmaCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                parmaOptions.style.display = 'block';
+            } else {
+                parmaOptions.style.display = 'none';
+                // Deseleziona tutti i radio button quando si deseleziona il checkbox
+                const radioButtons = parmaOptions.querySelectorAll('input[type="radio"]');
+                radioButtons.forEach(radio => {
+                    radio.checked = false;
+                });
+            }
+        });
+    }
     
     // Inizializza il selettore di prefisso telefonico
     initPhonePrefixSelector();
 });
-
-// Function to handle appointment checkbox
-function initAppointmentOptions() {
-    console.log("Initializing appointment options");
-    const parmaCheckbox = document.getElementById('parma-appointment');
-    const parmaOptions = document.getElementById('parma-options');
-    
-    // Inizializza tutti i checkbox-container (inclusi quelli del form come Privacy Policy)
-    const allCheckboxContainers = document.querySelectorAll('.checkbox-container');
-    
-    console.log("Found " + allCheckboxContainers.length + " checkbox containers");
-    
-    allCheckboxContainers.forEach(container => {
-        const checkbox = container.querySelector('input[type="checkbox"]');
-        const formOption = container.closest('.form-option');
-        
-        if (checkbox && formOption) {
-            // Initial state
-            if (checkbox.checked) {
-                formOption.classList.add('active');
-            } else {
-                formOption.classList.remove('active');
-            }
-            
-            // Mobile-friendly click event
-            container.addEventListener('click', function(e) {
-                // Prevent double-triggering when clicking directly on the checkbox
-                if (e.target !== checkbox) {
-                    checkbox.checked = !checkbox.checked;
-                    
-                    if (checkbox.checked) {
-                        formOption.classList.add('active');
-                    } else {
-                        formOption.classList.remove('active');
-                    }
-                    
-                    // Gestione specifica per il checkbox di appuntamento Parma
-                    if (checkbox.id === 'parma-appointment' && parmaOptions) {
-                        if (checkbox.checked) {
-                            parmaOptions.style.display = 'block';
-                        } else {
-                            parmaOptions.style.display = 'none';
-                            
-                            // Deseleziona tutti i radio button
-                            const radioButtons = parmaOptions.querySelectorAll('input[type="radio"]');
-                            radioButtons.forEach(radio => {
-                                radio.checked = false;
-                            });
-                        }
-                    }
-                    
-                    // Emit change event
-                    const event = new Event('change');
-                    checkbox.dispatchEvent(event);
-                }
-            });
-            
-            // Listen for direct changes on the checkbox
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    formOption.classList.add('active');
-                } else {
-                    formOption.classList.remove('active');
-                }
-                
-                // Gestione specifica per il checkbox di appuntamento Parma
-                if (this.id === 'parma-appointment' && parmaOptions) {
-                    if (this.checked) {
-                        parmaOptions.style.display = 'block';
-                    } else {
-                        parmaOptions.style.display = 'none';
-                        
-                        // Deseleziona tutti i radio button
-                        const radioButtons = parmaOptions.querySelectorAll('input[type="radio"]');
-                        radioButtons.forEach(radio => {
-                            radio.checked = false;
-                        });
-                    }
-                }
-            });
-        }
-    });
-    
-    // Handle radio button selection
-    const appointmentOptions = document.querySelectorAll('.appointment-option');
-    appointmentOptions.forEach(option => {
-        option.addEventListener('click', function(e) {
-            // Find the radio button inside this option
-            const radio = this.querySelector('input[type="radio"]');
-            if (radio) {
-                radio.checked = true;
-                
-                // Remove selected class from all options and add to the clicked one
-                appointmentOptions.forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-            }
-        });
-    });
-}
 
 // Function to handle scroll animations
 function initScrollAnimations() {
@@ -145,9 +60,6 @@ function initCarousel() {
     const prevButton = document.querySelector('.carousel-button.prev');
     const nextButton = document.querySelector('.carousel-button.next');
     
-    // If carousel components are not found, exit early
-    if (!carousel || !slides.length) return;
-    
     let currentSlide = 0;
     const totalSlides = slides.length;
     
@@ -165,50 +77,59 @@ function initCarousel() {
         carousel.style.transform = `translateX(${offset}%)`;
     }
     
-    // Add event listeners only if buttons exist
-    if (prevButton && nextButton) {
-        // Event listeners for buttons
-        prevButton.addEventListener('click', () => {
-            goToSlide(currentSlide - 1);
-        });
-        
-        nextButton.addEventListener('click', () => {
-            goToSlide(currentSlide + 1);
-        });
-        
-        // Auto-advance slides every 5 seconds
-        setInterval(() => {
-            goToSlide(currentSlide + 1);
-        }, 5000);
-    }
+    // Event listeners for buttons
+    prevButton.addEventListener('click', () => {
+        goToSlide(currentSlide - 1);
+    });
+    
+    nextButton.addEventListener('click', () => {
+        goToSlide(currentSlide + 1);
+    });
+    
+    // Auto-advance slides every 5 seconds
+    setInterval(() => {
+        goToSlide(currentSlide + 1);
+    }, 5000);
 }
 
 // Function to handle form submission
 function initContactForm() {
-    const contactForm = document.querySelector('.contact-form');
-    const result = document.createElement('div');
-    result.id = 'result';
-    result.style.marginTop = '10px';
-    result.style.padding = '10px';
-    result.style.display = 'none';
+    // Supporta sia il nuovo approccio (con id="form") che quello vecchio (con class="contact-form")
+    const form = document.getElementById("form") || document.querySelector('.contact-form');
     
-    if (contactForm) {
-        // Aggiungi l'elemento result dopo il form
-        contactForm.after(result);
+    // Cerca un elemento #result esistente o creane uno nuovo
+    let result = document.getElementById("result");
+    if (!result) {
+        result = document.createElement('div');
+        result.id = 'result';
+        result.style.marginTop = '10px';
+        result.style.padding = '10px';
+        result.style.display = 'none';
         
-        contactForm.addEventListener('submit', function(e) {
+        // Aggiungi l'elemento result dopo il form
+        if (form) {
+            form.after(result);
+        }
+    }
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
             e.preventDefault();
-            const formData = new FormData(contactForm);
+            
+            const formData = new FormData(form);
             const object = Object.fromEntries(formData);
             const json = JSON.stringify(object);
-            result.innerHTML = "Attendere prego...";
+            
+            // Controllo se la pagina è in tedesco
+            const isGerman = document.documentElement.lang === 'de';
+            result.innerHTML = isGerman ? "Bitte warten..." : "Attendere prego...";
             result.style.display = "block";
 
-            fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
+            fetch("https://api.web3forms.com/submit", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
                 body: json
             })
@@ -216,17 +137,23 @@ function initContactForm() {
                 let json = await response.json();
                 if (response.status == 200) {
                     result.innerHTML = json.message;
+                    result.style.color = "green"; // Aggiunge colore verde per successo
                 } else {
                     console.log(response);
                     result.innerHTML = json.message;
+                    result.style.color = "red"; // Aggiunge colore rosso per errore
                 }
             })
             .catch(error => {
                 console.log(error);
-                result.innerHTML = "Si è verificato un errore!";
+                // Messaggio di errore localizzato
+                result.innerHTML = isGerman 
+                    ? "Ein Fehler ist aufgetreten! Bitte überprüfen Sie Ihre Internetverbindung." 
+                    : "Si è verificato un errore! Controlla la tua connessione internet.";
+                result.style.color = "red";
             })
             .then(function() {
-                contactForm.reset();
+                form.reset();
                 
                 // Reset appointment options
                 const parmaOptions = document.getElementById('parma-options');
@@ -265,6 +192,17 @@ window.addEventListener('scroll', () => {
     }
 });
 
+// Add hover effect to feature cards
+document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-10px)';
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0)';
+    });
+});
+
 // Loading animation
 window.addEventListener('load', () => {
     const loader = document.querySelector('.loader');
@@ -275,21 +213,16 @@ window.addEventListener('load', () => {
     
     // Hide loader after a short delay
     setTimeout(() => {
-        if (loader) {
-            loader.classList.add('hidden');
-            // Remove loader from DOM after animation
-            setTimeout(() => {
-                if (loader.parentNode) {
-                    loader.remove();
-                }
-            }, 500);
-        }
+        loader.classList.add('hidden');
+        // Remove loader from DOM after animation
+        setTimeout(() => {
+            loader.remove();
+        }, 500);
     }, 1000);
 });
 
 // Funzione per gestire il selettore di prefisso telefonico
 function initPhonePrefixSelector() {
-    console.log("Initializing phone prefix selector");
     const prefixSelectors = document.querySelectorAll('.phone-prefix-selector');
     
     prefixSelectors.forEach(selector => {
@@ -301,16 +234,11 @@ function initPhonePrefixSelector() {
         const hiddenInput = selector.parentElement.querySelector('input[name="phone_prefix"]');
         const searchInput = selector.querySelector('.prefix-search input');
         
-        console.log("Setting up phone prefix selector", {selector, selectedPrefix, dropdown});
-        
         // Toggle dropdown when clicking on the selected prefix
-        selectedPrefix.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log("Selected prefix clicked");
+        selectedPrefix.addEventListener('click', () => {
             selector.classList.toggle('active');
             if (selector.classList.contains('active')) {
-                if (searchInput) searchInput.focus();
+                searchInput.focus();
             }
         });
         
@@ -323,18 +251,14 @@ function initPhonePrefixSelector() {
         
         // Handle prefix selection
         prefixItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log("Prefix item clicked");
-                
+            item.addEventListener('click', () => {
                 const prefix = item.getAttribute('data-prefix');
                 const country = item.getAttribute('data-country');
                 const flagSrc = item.querySelector('img').src;
                 
                 selectedImg.src = flagSrc;
                 selectedSpan.textContent = prefix;
-                if (hiddenInput) hiddenInput.value = prefix;
+                hiddenInput.value = prefix;
                 
                 selector.classList.remove('active');
             });
